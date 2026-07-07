@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 98</title>
+    <link rel="icon" type="image/png" href="https://win98icons.alexmeub.com/icons/png/windows-0.png">
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+        @keyframes hauntedFlicker {
+            0% { opacity: 1; }
+            5% { opacity: 0.8; }
+            10% { opacity: 1; }
+            15% { opacity: 0.5; }
+            20% { opacity: 1; }
+            50% { opacity: 1; transform: translate(2px, -2px) skew(1deg); }
+            55% { opacity: 0.9; transform: translate(-2px, 2px) skew(-1deg); }
+            100% { opacity: 1; transform: translate(0, 0) skew(0); }
+        }
+        @keyframes hauntedShake {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(3px, -3px); }
+            60% { transform: translate(-3px, -3px); }
+            80% { transform: translate(3px, 3px); }
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes bloodPulse {
+            0% { box-shadow: 0 0 15px #ff0000; }
+            50% { box-shadow: 0 10px 40px #aa0000, inset 0 0 30px #ff0000; }
+            100% { box-shadow: 0 0 15px #ff0000; }
+        }
+        .haunted-mode { background-color: #000000 !important; animation: hauntedFlicker 4s infinite; cursor: crosshair !important; }
+        .haunted-mode * { cursor: crosshair !important; }
+        .haunted-mode .desktop { background-image: radial-gradient(circle at center, transparent 0%, #000 90%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%23000"/><rect width="1" height="1" fill="%23f00" opacity="0.3"/></svg>') !important; background-color: #000000 !important; filter: none !important; }
+        .haunted-mode .window { border: 2px solid #ff0000 !important; background: #000000 !important; color: #ff0000 !important; animation: bloodPulse 2s infinite !important; text-shadow: 0 0 8px #ff0000 !important; }
+        .haunted-mode .title-bar { background: #ff0000 !important; color: black !important; text-transform: uppercase !important; }
+        .haunted-mode .icon-text { color: #ff0000 !important; background: black !important; font-family: 'Press Start 2P', monospace !important; font-size: 10px !important; text-shadow: 0 0 10px #ff0000 !important; }
+        .haunted-mode .start-bar { background: #000000 !important; border-top: 2px solid #ff0000 !important; box-shadow: 0 -5px 20px #ff0000 !important; }
+        .haunted-mode .start-btn { background: #ff0000 !important; color: #000 !important; font-weight: bold; animation: hauntedShake 0.4s infinite; }
+        .taskbar-tasks { flex-wrap: wrap !important; overflow: hidden; }
+        .task { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .title-bar-controls button { background-repeat: no-repeat !important; background-position: center !important; }
+        .btn-min { background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg width="6" height="2" viewBox="0 0 6 2" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="6" height="2" fill="black"/%3E%3C/svg%3E') !important; }
+        .btn-max { background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath fill-rule="evenodd" clip-rule="evenodd" d="M9 0H0V9H9V0ZM8 2H1V8H8V2Z" fill="black"/%3E%3C/svg%3E') !important; }
+        .btn-close { background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath fill-rule="evenodd" clip-rule="evenodd" d="M0 0H2V1H3V2H5V1H6V0H8V1H7V2H6V3H5V4H6V5H7V6H8V7H6V6H5V5H3V6H2V7H0V6H1V5H2V4H3V3H2V2H1V1H0V0Z" fill="black"/%3E%3C/svg%3E') !important; }
+    </style>
+<style>.app-window iframe { width: 100%; height: 100%; border: 0; }</style>
+
+<style>
+::-webkit-scrollbar { width: 16px; height: 16px; background: #dfdfdf; border-left: 1px solid #fff; border-top: 1px solid #fff; }
+::-webkit-scrollbar-thumb { background: #c0c0c0; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #808080; border-bottom: 2px solid #808080; }
+::-webkit-scrollbar-button:single-button { background-color: #dfdfdf; display: block; border-style: solid; height: 13px; width: 16px; }
+::-webkit-scrollbar-button:single-button:vertical:decrement { border-width: 0 8px 8px 8px; border-color: transparent transparent #555 transparent; }
+::-webkit-scrollbar-button:single-button:vertical:increment { border-width: 8px 8px 0 8px; border-color: #555 transparent transparent transparent; }
+.window { transition: transform 0.2s; }
+.task.active { border: 2px inset #fff !important; background: #a0a0a0; }
+.desktop-icon { width: 64px; height: 64px; display: inline-flex; flex-direction: column; align-items: center; justify-content: flex-start; margin: 10px; }
+#desktop { display: grid; grid-template-columns: repeat(auto-fill, 84px); grid-template-rows: repeat(auto-fill, 84px); align-content: start; justify-content: start; position: relative; }
+.loading-cursor * { cursor: wait !important; }
+.ghost-cursor { position: absolute; pointer-events: none; z-index: 999999; background: url('https://win98icons.alexmeub.com/icons/png/cursor-0.png') no-repeat; width: 24px; height: 24px; display: none; }
+.drag-selection { position: absolute; border: 1px dotted blue; background: rgba(0,0,255,0.1); z-index: 9999; pointer-events: none; }
+</style>
+
+</head>
+<body class="crt-effects">
+    
+    <audio id="audio-click" src="https://archive.org/download/win98sounds/Ding.wav"></audio>
+    <audio id="audio-dialup" src="https://www.soundjay.com/communication/sounds/dial-up-modem-01.mp3"></audio>
+    <audio id="audio-tada" src="https://archive.org/download/win98sounds/Tada.wav"></audio>
+    <audio id="audio-chord" src="https://archive.org/download/win98sounds/Chord.wav"></audio>
+    <audio id="audio-mail" src="https://archive.org/download/win98sounds/Chimes.wav"></audio>
+
+    <!-- BIOS -->
+    <div id="bios-screen" class="fullscreen-overlay">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Energy_Star_logo.svg" style="position: absolute; top: 20px; right: 30px; width: 120px;" alt="Energy Star">
+        <div id="bios-text" class="bios-text"></div>
+    </div>
+    
+    <!-- Fake BIOS Setup Screen -->
+    <div id="bios-setup-screen" class="fullscreen-overlay" style="display: none; background: #0000aa; color: #ffff55; flex-direction: column; z-index: 100000; font-family: 'Courier New', monospace; font-size: 16px; padding: 20px;">
+        <div style="text-align: center; font-weight: bold; margin-bottom: 20px; color: #ffffff;">ROM PCI/ISA BIOS (P2B-F)<br>CMOS SETUP UTILITY<br>AWARD SOFTWARE, INC.</div>
+        <div style="display: flex; gap: 50px;">
+            <div style="flex: 1;">
+                <div style="color: #ffffff; background: #aa0000; padding: 2px 10px;">STANDARD CMOS SETUP</div>
+                <div style="padding: 2px 10px;">BIOS FEATURES SETUP</div>
+                <div style="padding: 2px 10px;">CHIPSET FEATURES SETUP</div>
+                <div style="padding: 2px 10px;">POWER MANAGEMENT SETUP</div>
+            </div>
+            <div style="flex: 1;">
+                <div style="padding: 2px 10px;">INTEGRATED PERIPHERALS</div>
+                <div style="padding: 2px 10px;">SUPERVISOR PASSWORD</div>
+                <div style="padding: 2px 10px;">USER PASSWORD</div>
+                <div style="padding: 2px 10px;">SAVE & EXIT SETUP</div>
+                <div style="padding: 2px 10px; cursor: pointer; text-decoration: underline;" onclick="exitBiosSetup()">EXIT WITHOUT SAVING (Click here)</div>
+            </div>
+        </div>
+        <div style="margin-top: auto; border-top: 1px solid #ffff55; padding-top: 10px; color: #55ffff;">
+            Esc : Quit &nbsp;&nbsp;&nbsp;&nbsp; &uarr; &darr; &rarr; &larr; : Select Item<br>
+            F10 : Save & Exit Setup
+        </div>
+    </div>
+    
+    <!-- Login Dialog -->
+    <div id="login-overlay" style="display: none; position: fixed; top:0; left:0; width: 100vw; height: 100vh; background: #008080; z-index: 90000; align-items: center; justify-content: center;">
+        <div class="window app-window" id="login-window" style="width: 400px; display: flex; flex-direction: column; background: #c0c0c0;">
+            <div class="title-bar"><div class="title-bar-text">Welcome to Windows 98</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 15px; display: flex; gap: 15px; margin: 2px; background: #c0c0c0 !important; border: none !important; align-items: flex-start;">
+                <img src="https://win98icons.alexmeub.com/icons/png/key_win-4.png" style="width: 48px; height: 48px; flex-shrink: 0; background: transparent;">
+                <div style="flex:1; background: transparent;">
+                    <p style="margin: 0 0 15px 0; font-size: 11px; background: transparent;">Type a user name and password to log on to Windows.</p>
+                    <table style="width: 100%; font-size: 11px; border-spacing: 0; background: transparent; color: black;">
+                        <tr style="background: transparent;"><td style="padding:4px 0; width: 70px; background: transparent;">User name:</td><td style="padding:4px 0; background: transparent;"><select id="login-username" style="width: 100%; box-sizing: border-box; background: white; color: black; border: 2px inset #fff; padding: 2px;"><option value="Admin">Admin</option><option value="Guest" selected>Guest</option><option value="SYSTEM" disabled>SYSTEM (Locked)</option></select></td></tr>
+                        <tr style="background: transparent;"><td style="padding:4px 0; background: transparent;">Password:</td><td style="padding:4px 0; background: transparent;"><input type="password" id="login-password" style="width: 100%; box-sizing: border-box; background: white; color: black; border: 2px inset #fff; padding: 2px;" onkeydown="if(event.key==='Enter') finishLogin()"></td></tr>
+                    </table>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px; background: transparent;">
+                    <button onclick="finishLogin()" style="width: 80px; height: 23px;">OK</button>
+                    <button onclick="finishLogin()" style="width: 80px; height: 23px;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shutdown Screens -->
+    <div id="shutdown-wait-screen" class="fullscreen-overlay" style="display: none; background: black; flex-direction: column; z-index: 100000; justify-content: center; align-items: center;">
+        <div style="color: #FF8C00; font-family: 'Arial', sans-serif; font-size: 24px; font-weight: bold; text-align: center;">Windows is shutting down...</div>
+    </div>
+    <div id="shutdown-final-screen" class="fullscreen-overlay" style="display: none; background: black; flex-direction: column; z-index: 100001; justify-content: center; align-items: center;">
+        <div style="color: #FF8C00; font-family: 'Arial', sans-serif; font-size: 24px; font-weight: bold; text-align: center;">It is now safe to turn off your computer.</div>
+    </div>
+    
+    
+    <!-- Scandisk Screen -->
+    <div id="scandisk-screen" class="fullscreen-overlay" style="display: none; background: #0000aa; color: #ffff55; flex-direction: column; z-index: 100000; font-family: 'Courier New', monospace; font-size: 16px; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 20px; font-weight:bold;">Microsoft ScanDisk</div>
+        <div style="margin-bottom: 20px;">ScanDisk is now checking drive C for errors.</div>
+        <div style="width:400px;">
+            Checking folders... <span id="scandisk-folders"></span><br>
+            Checking files... <span id="scandisk-files"></span><br>
+            Checking free space... <span id="scandisk-free"></span><br>
+        </div>
+        <div style="margin-top: 40px; border: 1px solid #ffff55; width: 60%; height: 20px; position: relative;">
+            <div id="scandisk-progress" style="background: #ffff55; width: 0%; height: 100%;"></div>
+        </div>
+        <div id="scandisk-percent" style="margin-top: 10px;">0% completed</div>
+    </div>
+
+    <div id="bsod-screen" class="fullscreen-overlay bsod" style="display: none;">
+        <div class="bsod-text">
+            A fatal exception 0E has occurred at 0028:C0011E36 in <span id="bsod-module" style="color: yellow;">VXD VMM(01)</span> + <br>
+            00010E36. The current application will be terminated.<br><br>
+            * Press any key to terminate the current application.<br>
+            * Press CTRL+ALT+DEL again to restart your computer.<br><br>
+            Press any key to continue _
+        </div>
+    </div>
+    
+
+
+    <!-- Task Manager Window -->
+    <div class="window app-window" id="taskmgr-window" style="display: none; top: 25%; left: 25%; width: 400px; height: 350px;">
+        <div class="title-bar"><div class="title-bar-text">Windows Task Manager</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close" onclick="closeApp('taskmgr-window'); return false;"></button></div></div>
+        <div class="window-body" style="padding: 10px;">
+            <div style="background: white; border: 2px inset #fff; height: 250px; overflow-y: scroll; padding: 5px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 11px; font-family: Tahoma, sans-serif;">
+                    <tr style="background: #ccc; border-bottom: 1px solid #999;"><th>Image Name</th><th>PID</th><th>Mem Usage</th></tr>
+                    <tr><td>explorer.exe</td><td>1284</td><td>12,452 K</td></tr>
+                    <tr style="color:red; font-weight:bold;"><td>virus.exe</td><td>666</td><td>999,999 K</td></tr>
+                    <tr style="color:red; font-weight:bold;"><td>malware.sys</td><td>667</td><td>999,999 K</td></tr>
+                    <tr style="color:red; font-weight:bold;"><td>doom.exe</td><td>668</td><td>999,999 K</td></tr>
+                </table>
+            </div>
+            <div style="margin-top: 10px; text-align: right;">
+                <button onclick="triggerBSOD('ACCESS_DENIED')">End Process</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disk Defragmenter Window -->
+    <div class="window app-window" id="defrag-window" style="display: none; top: 15%; left: 15%; width: 500px; height: 300px;">
+        <div class="title-bar"><div class="title-bar-text">Disk Defragmenter</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close" onclick="closeApp('defrag-window'); return false;"></button></div></div>
+        <div class="window-body" style="padding: 10px;">
+            <p>Defragmenting Drive C: ...</p>
+            <div id="defrag-grid" style="display: grid; grid-template-columns: repeat(20, 1fr); gap: 1px; width: 100%; height: 150px; background: white; border: 2px inset #fff; padding: 2px;">
+                <!-- grid generated by js -->
+            </div>
+            <div style="margin-top: 10px;">
+                <button onclick="startDefrag()">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pinball Window -->
+    <div class="window app-window" id="pinball-window" style="display: none; top: 5%; left: 20%; width: 640px; height: 480px; background: #000;">
+        <div class="title-bar"><div class="title-bar-text">3D Space Cadet Pinball</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close" onclick="closeApp('pinball-window'); return false;"></button></div></div>
+        <div class="window-body" style="padding: 0; display:flex; justify-content:center; align-items:center; height:100%;">
+            <div style="color:lime; font-family:'Courier New'; text-align:center; cursor:pointer;" onclick="triggerBSOD('PINBALL_TILT')">
+                <h1>3D Pinball</h1>
+                <p>Click here to Insert Coin</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Messenger Window -->
+    <div class="window app-window" id="aim-window" style="display: none; top: 15%; left: 65%; width: 350px; height: 450px; background: #c0c0c0;">
+        <div class="title-bar"><div class="title-bar-text">Messenger</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close" onclick="closeApp('aim-window'); return false;"></button></div></div>
+        <div class="window-body" style="padding: 0; display:flex; flex-direction:column; height: calc(100% - 25px);">
+            <div style="background: #000080; color: #fff; padding: 5px; font-weight: bold; border-bottom: 2px solid #fff;">Welcome to Messenger!</div>
+            <div style="background: #fff; border: 2px inset #ddd; flex: 1; padding: 10px; overflow-y: scroll; font-family: Tahoma, sans-serif; font-size: 13px;" id="aim-chat">
+                <div style="margin-bottom: 10px;"><b>System:</b> Connected to global network...</div>
+                <div style="margin-bottom: 10px; color: green; cursor:pointer;" onclick="triggerBSOD('BUDDY_ERROR')"><b>[Online]</b> xX_Dark_Xx: hello anyone here?</div>
+                <div style="margin-bottom: 10px; color: red; cursor:pointer;" onclick="triggerBSOD('BUDDY_ERROR')"><b>[Online]</b> SmArTGuY99: warning! do not click me!!</div>
+            </div>
+            <div style="display: flex; gap: 5px; padding: 5px; background: #c0c0c0;">
+                <input type="text" id="chat-input" placeholder="Type a message..." style="flex:1; border: 2px inset #ddd; padding: 3px;" onkeydown="if(event.key==='Enter') window.sendChat()">
+                <button onclick="window.sendChat()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CD-ROM Autorun -->
+    <div class="window app-window" id="cdrom-window" style="display: none; top: 30%; left: 40%; width: 300px; height: 150px;">
+        <div class="title-bar"><div class="title-bar-text">CD-ROM AutoRun</div><div class="title-bar-controls"><button class="btn-close" onclick="closeApp('cdrom-window')"></button></div></div>
+        <div class="window-body" style="padding:20px; text-align:center; height:100%; box-sizing:border-box;">
+            <p style="margin-top:0px; margin-bottom:20px;">A CD was inserted. What do you want to do?</p>
+            <button onclick="openApp('setup-wizard-window'); closeApp('cdrom-window');" style="padding: 4px 20px;">Run Setup</button>
+        </div>
+    </div>
+
+    <!-- Setup Wizard Window -->
+    <div class="window app-window" id="setup-wizard-window" style="display: none; top: 20%; left: 30%; width: 450px; height: 350px;">
+        <div class="title-bar"><div class="title-bar-text">Windows 98 Setup</div><div class="title-bar-controls"><button class="btn-close" onclick="closeApp('setup-wizard-window')"></button></div></div>
+        <div class="window-body" style="display: flex; flex-direction: column; height: calc(100% - 30px); margin: 0; padding: 15px; font-family: Tahoma, sans-serif;">
+            <div style="flex: 1;">
+                <h3 style="margin-top:0;">Preparing to Install...</h3>
+                <p>Please wait while Setup prepares to install DirectX 9.0c on your computer.</p>
+                <!-- Animation container -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 0;">
+                    <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" width="32">
+                    <div style="position: relative; width: 100px; height: 32px; overflow: hidden;">
+                        <img src="https://win98icons.alexmeub.com/icons/png/file_lines-0.png" width="16" style="position: absolute; left: 0; top: 8px; animation: copyFile 1.5s infinite linear;">
+                    </div>
+                    <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png" width="32">
+                </div>
+                <style>@keyframes copyFile { 0% { left: 0; opacity: 1; } 80% { opacity: 1; } 100% { left: 100px; opacity: 0; } }</style>
+                <div style="border: 1px inset #fff; width: 100%; height: 20px; background: #c0c0c0; position: relative;">
+                    <div style="background: #000080; width: 0%; height: 100%; animation: loadBar 5s forwards;"></div>
+                </div>
+                <style>@keyframes loadBar { 0% { width: 0%; } 100% { width: 100%; } }</style>
+            </div>
+            <div style="border-top: 1px solid #808080; padding-top: 10px; text-align: right;">
+                <button onclick="triggerBSOD('FATAL_USER_INITIATED_ERROR')">Install</button>
+                <button onclick="closeApp('setup-wizard-window')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Antivirus Window -->
+    <div class="window app-window" id="antivirus-window" style="display: none; top: 30%; left: 30%; width: 420px; height: 320px; background-color: #c0c0c0;">
+        <div class="title-bar"><div class="title-bar-text">Antivirus</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+        <div class="window-body" style="padding: 15px; font-family: Tahoma, sans-serif;">
+            <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                <img src="https://win98icons.alexmeub.com/icons/png/settings_gear-0.png" width="48" height="48">
+                <div>
+                    <h3 style="margin: 0; font-size: 16px;">System Security Status</h3>
+                    <p style="margin: 5px 0; font-size: 12px; color: green; font-weight: bold;">Your system is currently protected.</p>
+                    <p style="margin: 0; font-size: 11px;">Last scan: Today at 03:00 AM</p>
+                </div>
+            </div>
+            
+            <fieldset style="padding: 10px; margin-bottom: 20px;">
+                <legend>Quick Scan</legend>
+                <p style="font-size: 11px; margin-bottom: 10px;">Scan critical system areas for potential threats and vulnerabilities.</p>
+                <div style="height: 15px; width: 100%; border: 1px inset #fff; background: #fff; margin-bottom: 10px;">
+                    <div id="av-progress" style="height: 100%; width: 0%; background: #000080;"></div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button id="av-scan-btn" onclick="startOEMScan()" style="width: 100px; height: 23px;">Start Scan</button>
+                </div>
+            </fieldset>
+
+            <div style="text-align: right;">
+                <button onclick="closeApp('antivirus-window')" style="width: 80px; height: 23px;">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- CRT Settings Window -->
+    <div class="window app-window" id="crt-settings-window" style="display: none; top: 30%; left: 30%; width: 250px; z-index: 100000;">
+        <div class="title-bar"><div class="title-bar-text">CRT Display Properties</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+        <div class="window-body" style="padding: 10px; font-family: Tahoma, sans-serif; font-size: 11px;">
+            <p>Adjust the intensity of the CRT scanline and flicker effects.</p>
+            <label>Scanlines (Opacity):</label><br>
+            <input type="range" id="crt-scanlines" min="0" max="100" value="25" style="width: 100%;" oninput="updateCRT()"><br><br>
+            <label>Flicker Intensity:</label><br>
+            <input type="range" id="crt-flicker" min="0" max="100" value="100" style="width: 100%;" oninput="updateCRT()">
+            <div style="text-align: right; margin-top: 15px;">
+                <button onclick="closeApp('crt-settings-window')" style="width: 70px; height: 23px;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Desktop -->
+    <iframe id="active-desktop" src="about:blank" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 0; pointer-events: none; opacity: 0.5;"></iframe>
+
+    <!-- DO NOT CLICK Window -->
+    <div class="window app-window" id="dontclick-window" style="display: none; top: 25%; left: 30%; width: 350px; height: 180px; background-color: #c0c0c0;">
+        <div class="title-bar" style="background: #000080;"><div class="title-bar-text">System Core Injector</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+        <div class="window-body" style="padding: 15px; font-family: Tahoma, sans-serif;">
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <img src="https://win98icons.alexmeub.com/icons/png/msg_error-0.png" width="32" height="32" style="animation: glitch 0.2s infinite;">
+                <div style="color: #ff0000;">
+                    <h3 style="margin: 0; font-size: 14px; font-family: 'Courier New', Courier, monospace; font-weight: bold;">CRITICAL INFECTION IN PROGRESS...</h3>
+                    <p style="margin: 5px 0; font-size: 11px; font-family: 'Courier New', Courier, monospace;">Corrupting system memory...</p>
+                </div>
+            </div>
+            <div style="height: 15px; width: 100%; border: 1px inset #fff; background: #fff; margin-top: 20px;">
+                <div style="height: 100%; width: 100%; background: #ff0000; animation: flash 0.1s infinite;"></div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            25% { transform: translate(-2px, 2px) }
+            50% { transform: translate(2px, -2px) }
+            75% { transform: translate(-2px, -2px) }
+            100% { transform: translate(2px, 2px) }
+        }
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+
+    <div class="desktop" id="desktop" style="transition: background-color 0.5s ease-in-out;">
+        <div id="selection-box" hidden></div>
+
+        <!-- Icons -->
+        <div tabindex="0" class="icon-wrapper" id="icon-mycomputer" data-app="explorer-window" style="top: 20px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png"><span class="icon-text">My<br>Computer</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-ie" data-app="ie-window" style="top: 100px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/msie1-2.png"><span class="icon-text">Internet<br>Explorer</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-notepad" data-app="notepad-window" style="top: 180px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/notepad-0.png"><span class="icon-text">WordPad</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-paint" data-app="paint-window" style="top: 260px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/paint_file-0.png"><span class="icon-text">Paint</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-calc" data-app="calc-window" style="top: 340px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/calculator-1.png"><span class="icon-text">Calculator</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-cmd" data-app="cmd-window" style="top: 420px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png"><span class="icon-text">MS-DOS</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-ms" data-app="minesweeper-window" style="top: 500px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/minesweeper-0.png"><span class="icon-text">Minesweeper</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-antivirus" data-app="antivirus-window" style="top: 580px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/settings_gear-0.png"><span class="icon-text">Antivirus</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-bin" data-app="bin-window" style="top: 660px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-4.png" id="bin-img"><span class="icon-text">Recycle Bin</span></div>
+
+        <div tabindex="0" class="icon-wrapper" id="icon-aim" data-app="aim-window" style="top: 820px; left: 20px;"><img src="https://win98icons.alexmeub.com/icons/png/users-1.png"><span class="icon-text">Messenger</span></div>
+
+        <div tabindex="0" class="icon-wrapper" id="icon-defrag" data-app="defrag-window" style="top: 20px; left: 100px;"><img src="https://win98icons.alexmeub.com/icons/png/defragment-0.png"><span class="icon-text">Disk Defrag</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-dontclick" data-app="dontclick" style="top: 100px; left: 100px;"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png"><span class="icon-text" style="color:red; font-weight:bold;">DO NOT<br>CLICK</span></div>
+        <div tabindex="0" class="icon-wrapper" id="icon-admin" data-app="admin-login-window" style="top: 180px; left: 100px;"><img src="https://win98icons.alexmeub.com/icons/png/users_key-4.png"><span class="icon-text" style="color:gold; font-weight:bold; text-shadow: 1px 1px 0 #000;">Admin Zone</span></div>
+
+        <div id="new-folders-container"></div>
+    <!-- Viral OEM Error Dialog -->
+    <div class="window app-window viral-error" id="evading-error" style="display: none; top: 40%; left: 40%; width: 400px; z-index: 10005; border: 2px outset #dfdfdf;">
+        <div class="title-bar" style="background: #000080;"><div class="title-bar-text" style="color: #fff;">Fatal Exception 0E</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close" onclick="cloneErrorWindow(this)"></button></div></div>
+        <div class="window-body" style="padding: 15px; display: flex; align-items: flex-start; gap: 15px;">
+            <img src="https://win98icons.alexmeub.com/icons/png/msg_error-0.png" width="32" height="32">
+            <div style="flex: 1;">
+                <p style="margin-top: 0; font-family: Tahoma, sans-serif; font-size: 11px;">An exception 0E has occurred at 0028:C0011E36 in VxD VMM(01) + 00010E36. This was called from 0028:C0011E36 in VxD VMM(01).<br><br>It may be possible to continue normally.</p>
+                <div style="text-align: center; margin-top: 15px; display: flex; justify-content: center; gap: 10px;">
+                    <button onclick="cloneErrorWindow(this)" style="width: 80px;">OK</button>
+                    <button onclick="cloneErrorWindow(this)" style="width: 80px;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Fake Deletion Progress -->
+        <div class="window app-window" id="deletion-window" style="display: none; top: 35%; left: 35%; width: 350px; z-index: 10006;">
+            <div class="title-bar"><div class="title-bar-text">Deleting...</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close" onclick="abortWipe(); return false;"></button></div></div>
+            <div class="window-body" style="padding: 10px;">
+                <p>Deleting C:\WINDOWS\SYSTEM32...</p>
+                <div style="height: 20px; width: 100%; border: 1px inset #fff; background: #ddd; margin-bottom: 10px;">
+                    <div id="del-progress" style="height: 100%; width: 0%; background: #000080;"></div>
+                </div>
+                <div style="text-align: right;">
+                    <button onclick="abortWipe()" style="width: 80px; height: 23px;">Abort</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Run Dialog -->
+        <div class="window app-window" id="run-dialog" style="display: none; top: auto; bottom: 40px; left: 10px; width: 350px;">
+            <div class="title-bar"><div class="title-bar-text">Run</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 10px; display: flex; align-items: center; gap: 10px;">
+                <img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png">
+                <div style="flex:1;">
+                    Type the name of a program, folder, or document, and Windows will open it for you.<br>
+                    Open: <input type="text" id="run-input" style="width: 100%; margin-top: 5px;">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <button onclick="executeRun()">OK</button>
+                    <button class="btn-close-internal" aria-label="Cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save As Dialog -->
+        <div class="window app-window" id="saveas-dialog" style="display: none; top: 40%; left: 40%; width: 250px; z-index: 10004;">
+            <div class="title-bar"><div class="title-bar-text">WordPad</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 10px; text-align: center;">
+                <p>Do you want to save changes to Document?</p>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button onclick="downloadWordpad(); document.getElementById('saveas-dialog').style.display='none'; document.getElementById('notepad-window').style.display='none';">Yes</button>
+                    <button onclick="document.getElementById('saveas-dialog').style.display='none'; document.getElementById('notepad-window').style.display='none';">No</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warning Dialog -->
+        <div class="window app-window" id="warning-dialog" style="display: none; top: 45%; left: 45%; transform: translate(-50%, -50%); width: 300px; z-index: 10005; background: #c0c0c0;">
+            <div class="title-bar"><div class="title-bar-text">Windows</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close" onclick="document.getElementById('warning-dialog').style.display='none'"></button></div></div>
+            <div class="window-body" style="padding: 15px; display: flex; align-items: center; gap: 15px; background: #c0c0c0 !important; border: none !important;">
+                <img src="https://win98icons.alexmeub.com/icons/png/msg_error-0.png" width="32" height="32">
+                <div id="warning-msg" style="font-family: Tahoma, sans-serif; font-size: 12px; color: black;"></div>
+            </div>
+            <div style="text-align: center; margin-bottom: 15px; background: #c0c0c0;">
+                <button onclick="document.getElementById('warning-dialog').style.display='none'" style="width: 80px; height: 23px;">OK</button>
+            </div>
+        </div>
+
+        <!-- File Explorer -->
+        <div class="window app-window" id="c-drive-window" style="display: none; top: 10%; left: 10%; width: 500px; height: 350px;">
+            <div class="title-bar"><div class="title-bar-text">C:\WINDOWS</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="display: flex; height: calc(100% - 30px); margin: 0; padding: 0;">
+                <div style="width: 150px; background: white; border-right: 2px solid #808080; padding: 5px; overflow-y: auto; font-family: Tahoma; font-size: 11px;">
+                    <b>Folders</b>
+                    <ul style="list-style-type: none; padding-left: 10px; margin: 0;">
+                        <li>[-] C:\
+                            <ul style="list-style-type: none; padding-left: 15px;">
+                                <li>[+] Program Files</li>
+                                <li>[-] WINDOWS
+                                    <ul style="list-style-type: none; padding-left: 15px;">
+                                        <li>[+] SYSTEM32</li>
+                                        <li>[+] Desktop</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div style="flex: 1; background: white; padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; overflow-y: auto;">
+                    <div style="text-align: center;"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png"><br><span style="font-size: 11px;">SYSTEM32</span></div>
+                    <div style="text-align: center; cursor: pointer;" onclick="openApp('calc-window')"><img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png"><br><span style="font-size: 11px;">calc.exe</span></div>
+                    <div style="text-align: center; cursor: pointer;" onclick="openApp('notepad-window')"><img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png"><br><span style="font-size: 11px;">notepad.exe</span></div>
+                    <div style="text-align: center;"><img src="https://win98icons.alexmeub.com/icons/png/dll-1.png"><br><span style="font-size: 11px;">user32.dll</span></div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Device Manager -->
+        <div class="window app-window" id="device-manager" style="display: none; top: 15%; left: 20%; width: 400px; height: 300px;">
+            <div class="title-bar"><div class="title-bar-text">Device Manager</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="height: calc(100% - 30px); margin: 0; padding: 5px; background: white; overflow-y: auto; font-family: Tahoma; font-size: 11px;">
+                <ul style="list-style-type: none; padding-left: 0; margin: 0;">
+                    <li>[-] Computer
+                        <ul style="list-style-type: none; padding-left: 15px;">
+                            <li>[+] Display adapters</li>
+                            <li>[-] Network adapters
+                                <ul style="list-style-type: none; padding-left: 15px;">
+                                    <li><img src="https://win98icons.alexmeub.com/icons/png/warning-0.png" style="width: 12px;"> Realtek RTL8139 Family PCI (Code 10)</li>
+                                </ul>
+                            </li>
+                            <li>[+] Sound, video and game controllers</li>
+                            <li>[-] Universal Serial Bus controllers
+                                <ul style="list-style-type: none; padding-left: 15px;">
+                                    <li><img src="https://win98icons.alexmeub.com/icons/png/warning-0.png" style="width: 12px;"> Unknown Device</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Dial-up Prompt -->
+        <div class="window app-window" id="dialup-dialog" style="display: none; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; z-index: 10001; background: #c0c0c0;">
+            <div class="title-bar"><div class="title-bar-text">Dial-up Connection</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #c0c0c0 !important; border: none !important; font-family: Tahoma, sans-serif;">
+                <img src="https://win98icons.alexmeub.com/icons/png/modem-0.png" style="margin-bottom: 10px;">
+                <p style="margin-bottom: 10px; font-size: 13px; text-align: center;">Connecting to EarthLink...</p>
+                <button onclick="startDialup()" style="margin-top: 10px; width: 100px; height: 23px; font-weight: bold;">Connect</button>
+            </div>
+        </div>
+
+        <!-- Download Manager -->
+        <div class="window app-window" id="download-window" style="display: none; top: 40%; left: 40%; width: 350px;">
+            <div class="title-bar"><div class="title-bar-text">File Download</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 10px;">
+                <p>Saving: <b>MoreRAM.exe</b> from http://freeram.com/</p>
+                <p>Estimated time left: <span id="dl-time">39 min 12 sec (4.1 KB/Sec)</span></p>
+                <div style="height: 20px; width: 100%; border: 1px inset #fff; background: #ddd; margin-bottom: 5px;">
+                    <div id="dl-progress" style="height: 100%; width: 0%; background: #000080;"></div>
+                </div>
+                <div style="text-align: right;"><button class="btn-close-internal" aria-label="Close">Cancel</button></div>
+            </div>
+        </div>
+
+        <!-- Webcam -->
+        <div class="window app-window" id="webcam-window" style="display: none; top: 25%; left: 25%; width: 320px;">
+            <div class="title-bar"><div class="title-bar-text">Webcam Pro</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 0; background: #000;">
+                <video id="webcam-video" style="width: 100%; height: auto; image-rendering: pixelated; filter: grayscale(100%) contrast(1.5) sepia(0.2);" autoplay playsinline></video>
+                <div style="padding: 5px; background: #c0c0c0; text-align: center;">
+                    <button onclick="startWebcam()">Start Video</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="window app-window" id="control-panel" style="display: none; top: 15%; left: 20%; width: 450px;">
+            <div class="title-bar"><div class="title-bar-text">Control Panel</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
+                <div><img src="https://win98icons.alexmeub.com/icons/png/settings_gear_cool-1.png"><br>System</div>
+                <div onclick="document.getElementById('display-properties').style.display='block'; bringToFront(document.getElementById('display-properties'));"><img src="https://win98icons.alexmeub.com/icons/png/display_properties-1.png"><br>Display</div>
+                <div onclick="openApp('webcam-window')"><img src="https://win98icons.alexmeub.com/icons/png/camera3-2.png"><br>Webcam</div>
+                <div><img src="https://win98icons.alexmeub.com/icons/png/sound_file-1.png"><br>Sounds</div>
+                <div onclick="openApp('device-manager')"><img src="https://win98icons.alexmeub.com/icons/png/hardware-1.png"><br>Device Manager</div>
+            </div>
+        </div>
+
+        <!-- Display Properties -->
+        <div class="window app-window" id="display-properties" style="display: none; top: 20%; left: 30%; width: 350px;">
+            <div class="title-bar"><div class="title-bar-text">Display Properties</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 10px; font-family: Tahoma, sans-serif;">
+                <fieldset style="padding: 10px; margin-bottom: 10px;"><legend>Background</legend><button onclick="document.getElementById('desktop').style.backgroundImage = 'url(wallpaper.png)'">Mountains</button><button onclick="document.getElementById('desktop').style.background = '#008080'; document.getElementById('desktop').style.backgroundImage = 'none'">Teal</button><button onclick="document.getElementById('desktop').style.background = '#000000'; document.getElementById('desktop').style.backgroundImage = 'none'">Black</button></fieldset>
+                <fieldset style="padding: 10px;"><legend>Active Desktop</legend><button onclick="document.getElementById('active-desktop').style.display='block'">Enable</button><button onclick="document.getElementById('active-desktop').style.display='none'">Disable</button></fieldset>
+            </div>
+        </div>
+
+        <!-- FULL IE -->
+        <div class="window app-window" id="ie-window" style="display: none; top: 5%; left: 5%; width: 90%; max-width: 900px; height: 85%;">
+            <div class="title-bar"><div class="title-bar-text">Internet Explorer</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="display: flex; flex-direction: column; height: calc(100% - 30px); margin: 0; padding: 0;">
+                
+                <div class="toolbar" style="padding: 5px; border-bottom: 1px solid #808080; display: flex; align-items: center; gap: 5px;">
+                    <button class="toolbar-btn" onclick="showIEView('google')">Home</button>
+                    <button class="toolbar-btn" onclick="toggleIEHistory()">History</button>
+                    <button class="toolbar-btn" onclick="toggleIEFavorites()">Favorites</button>
+                    <input type="text" class="address-bar" id="ie-address" value="http://www.google.com" style="flex:1;" readonly>
+                </div>
+
+                <div style="background: yellow; color: red; font-family: 'Comic Sans MS'; padding: 2px; font-size: 12px; border-bottom: 1px solid black; font-weight: bold; overflow: hidden; white-space: nowrap;">
+                    <marquee scrollamount="5">HOT NEWS: DOWNLOAD MORE RAM NOW! CLICK TO ENLARGE YOUR FLOPPY DISK! DONT FORGET TO SIGN OUR GUESTBOOK!</marquee>
+                </div>
+
+                <div style="display: flex; flex: 1; overflow: hidden;">
+                    <!-- Sidebar -->
+                    <div id="ie-sidebar" style="display: none; width: 150px; background: #c0c0c0; border-right: 2px outset #fff; padding: 5px; overflow-y: auto;">
+                        <h4 id="ie-sidebar-title" style="margin: 0 0 5px 0;">Sidebar</h4>
+                        <div id="ie-sidebar-content" style="background: white; border: 2px inset #fff; padding: 2px; height: calc(100% - 20px);"></div>
+                    </div>
+
+                    <!-- Main View Area -->
+                    <div id="ie-content" style="flex: 1; position: relative; background: white; overflow-y: auto;">
+                        <div id="fake-loading-bar" style="display:none; position: absolute; top:0; left:0; height: 5px; background: blue; width: 0%;"></div>
+                        
+                        <!-- Java Applet Loading Screen -->
+                        <div id="java-applet" style="display: none; position: absolute; top: 30%; left: 30%; width: 200px; height: 150px; background: #eee; border: 2px inset #ccc; text-align: center; padding-top: 20px;">
+                            <img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png" style="width: 48px; height: 48px;"><br><br>
+                            <span style="font-family: Arial; font-size: 12px;">Loading Java Applet...</span>
+                        </div>
+
+                        <!-- Google View -->
+                        <div id="ie-google" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                            <div class="logo-container" style="margin-bottom: 20px;"><div class="google-98-logo" style="font-size: 50px; font-weight:bold; font-family: 'Times New Roman', serif;"><span style="color: blue;">G</span><span style="color: red;">o</span><span style="color: #fbbc05;">o</span><span style="color: blue;">g</span><span style="color: green;">l</span><span style="color: red;">e</span><span style="color: blue;">!</span></div></div>
+                            <div class="search-form-wrapper" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                                <div style="background:#e0e0e0; padding: 10px; border: 2px outset #fff; margin-bottom: 20px; width: 80%; max-width: 500px; text-align: center; font-weight: bold;">Search the web using Google!</div>
+                                <form id="search-form" onsubmit="handleSearch(event); for(let i=0; i<5; i++) setTimeout(spawnRandomAd, i*200);" style="display: flex; flex-direction: column; align-items: center;">
+                                    <input type="text" id="search-input" autocomplete="off" style="width: 450px; padding: 5px; font-size: 18px; border: 2px inset #fff; margin-bottom: 20px;">
+                                    <div class="buttons" style="display: flex; gap: 15px;">
+                                        <button type="submit" style="padding: 5px 15px; font-weight: bold;">Google Search</button>
+                                        <button type="button" onclick="startDownloadManager(); spawnRandomAd(); spawnRandomAd();" style="padding: 5px 15px; font-weight: bold;">I'm Feeling Lucky</button>
+                                    </div>
+                                </form>
+                                <img src="https://win98icons.alexmeub.com/icons/png/world-1.png" style="margin-top: 30px; width: 64px; height: 64px; cursor: pointer;" onclick="for(let i=0; i<10; i++) setTimeout(spawnRandomAd, i*100);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+        
+        <!-- WordPad -->
+        <div class="window app-window" id="notepad-window" style="display: none; top: 10%; left: 20%; width: 500px; height: 400px; z-index: 50;">
+            <div class="title-bar"><div class="title-bar-text">WordPad</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close" onclick="closeApp('notepad-window'); return false;"></button></div></div>
+            <div class="window-body" style="height: calc(100% - 30px); margin: 0; padding: 0; display: flex; flex-direction: column;">
+                <!-- WordPad Navigation Menu Bar -->
+                <div style="background: #c0c0c0; border-bottom: 1px solid #808080; display: flex; font-family: Tahoma, Arial, sans-serif; font-size: 11px; padding: 2px 5px; gap: 10px;">
+                    <span style="cursor: default; padding: 2px 4px;" onmouseover="this.style.background='#000080'; this.style.color='white';" onmouseout="this.style.background=''; this.style.color='black';"><u>F</u>ile</span>
+                    <span style="cursor: default; padding: 2px 4px;" onmouseover="this.style.background='#000080'; this.style.color='white';" onmouseout="this.style.background=''; this.style.color='black';"><u>E</u>dit</span>
+                    <span style="cursor: default; padding: 2px 4px;" onmouseover="this.style.background='#000080'; this.style.color='white';" onmouseout="this.style.background=''; this.style.color='black';"><u>V</u>iew</span>
+                    <span style="cursor: default; padding: 2px 4px;" onmouseover="this.style.background='#000080'; this.style.color='white';" onmouseout="this.style.background=''; this.style.color='black';"><u>I</u>nsert</span>
+                    <span style="cursor: default; padding: 2px 4px;" onmouseover="this.style.background='#000080'; this.style.color='white';" onmouseout="this.style.background=''; this.style.color='black';"><u>F</u>ormat</span>
+                    <span style="cursor: default; padding: 2px 4px;" onmouseover="this.style.background='#000080'; this.style.color='white';" onmouseout="this.style.background=''; this.style.color='black';"><u>H</u>elp</span>
+                </div>
+                <div style="background: #c0c0c0; border-bottom: 2px solid #808080; display: flex; gap: 5px; padding: 4px; align-items: center;">
+                    <button onclick="document.execCommand('bold')" style="width: 24px; height: 24px; font-weight: bold; font-family: 'Times New Roman', serif; font-size: 14px;" title="Bold">B</button>
+                    <button onclick="document.execCommand('italic')" style="width: 24px; height: 24px; font-style: italic; font-family: 'Times New Roman', serif; font-size: 14px;" title="Italic">I</button>
+                    <button onclick="document.execCommand('underline')" style="width: 24px; height: 24px; text-decoration: underline; font-family: 'Times New Roman', serif; font-size: 14px;" title="Underline">U</button>
+                    <div style="border-left: 1px solid #808080; border-right: 1px solid #fff; height: 20px;"></div>
+                    <select onchange="document.execCommand('fontName', false, this.value)" style="height: 22px;">
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Courier New">Courier</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                    <select onchange="document.execCommand('fontSize', false, this.value)" style="height: 22px;">
+                        <option value="1">Small</option>
+                        <option value="3" selected>Normal</option>
+                        <option value="5">Large</option>
+                        <option value="7">Huge</option>
+                    </select>
+                </div>
+                <div id="wordpad-editor" contenteditable="true" style="flex: 1; padding: 10px; font-family: 'Times New Roman'; font-size: 16px; background: white; overflow-y: auto;">Start typing...</div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+        
+        <!-- FULL Calc -->
+        <div class="window app-window" id="calc-window" style="display: none; top: 20%; left: 20%; width: 320px;">
+            <div class="title-bar"><div class="title-bar-text">Calculator</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 5px;">
+                <input type="text" id="calc-display" style="width: 100%; text-align: right; margin-bottom: 5px;" readonly>
+                <button onclick="toggleCalcMode()" style="width:100%; margin-bottom: 5px;">Scientific</button>
+                <div id="calc-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;">
+                    <button onclick="calcPress('7')">7</button><button onclick="calcPress('8')">8</button><button onclick="calcPress('9')">9</button><button onclick="calcPress('/')">/</button>
+                    <button onclick="calcPress('4')">4</button><button onclick="calcPress('5')">5</button><button onclick="calcPress('6')">6</button><button onclick="calcPress('*')">*</button>
+                    <button onclick="calcPress('1')">1</button><button onclick="calcPress('2')">2</button><button onclick="calcPress('3')">3</button><button onclick="calcPress('-')">-</button>
+                    <button onclick="calcPress('0')">0</button><button onclick="calcPress('.')">.</button><button onclick="calcEval()">=</button><button onclick="calcPress('+')">+</button>
+                    <button onclick="calcClear()" style="grid-column: span 4;">Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MS-DOS Prompt Window -->
+        <div class="window app-window" id="cmd-window" style="display: none; top: 25%; left: 25%; width: 600px; height: 400px; background: #c0c0c0; font-family: 'Courier New', Courier, monospace;">
+            <div class="title-bar"><div class="title-bar-text">MS-DOS Prompt</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close" onclick="closeApp('cmd-window'); return false;"></button></div></div>
+            <div class="window-body" style="padding: 10px; margin: 2px; height: calc(100% - 30px); overflow-y: scroll; display: flex; flex-direction: column; background: #000000; color: #c0c0c0; border: 2px inset #fff;" id="cmd-body" onclick="document.getElementById('cmd-input').focus()">
+                <div>Microsoft(R) Windows 98<br>&nbsp;&nbsp;&nbsp;(C)Copyright Microsoft Corp 1981-1999.<br><br><span style="color:red">Warning: DO NOT type `format c:` or `virus` or `del`</span></div>
+                <div id="cmd-output" style="flex: 1;"></div>
+                <div style="display: flex; margin-top: 5px;">
+                    <span>C:\WINDOWS>&nbsp;</span>
+                    <input type="text" id="cmd-input" style="background: transparent; color: #c0c0c0; border: none; outline: none; width: 100%; font-family: 'Courier New', Courier, monospace;" autocomplete="off" autofocus>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- FULL Paint -->
+        <div class="window app-window" id="paint-window" style="display: none; top: 5%; left: 30%; width: 650px; height: 450px; background: #c0c0c0;">
+            <div class="title-bar"><div class="title-bar-text">untitled - Paint</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="display: flex; flex-direction: column; margin: 0; padding: 0; height: calc(100% - 25px); background: #c0c0c0; border: 1px solid #fff; border-right-color: #808080; border-bottom-color: #808080;">
+                <div style="height: 40px; background: #c0c0c0; border-bottom: 1px solid #808080; display: flex; align-items: center; padding: 5px; gap: 10px;">
+                    <!-- Toolbox -->
+                    <div style="display: flex; gap: 2px;">
+                        <button onclick="setPaintTool('pencil')" style="width: 26px; height: 26px; padding: 0; font-family: Arial; font-size: 14px; font-weight: bold;" title="Pencil">&#9998;</button>
+                        <button onclick="setPaintTool('fill')" style="width: 26px; height: 26px; padding: 0; font-family: Arial; font-size: 14px; font-weight: bold;" title="Fill">&#9632;</button>
+                        <button onclick="setPaintTool('eraser')" style="width: 26px; height: 26px; padding: 0; font-family: Arial; font-size: 14px; font-weight: bold;" title="Eraser">&#9633;</button>
+                        <button onclick="setPaintTool('brush')" style="width: 26px; height: 26px; padding: 0; font-family: Arial; font-size: 14px; font-weight: bold;" title="Brush">&#128396;</button>
+                    </div>
+                    <div style="border-left: 2px groove #fff; height: 100%; margin: 0 5px;"></div>
+                    <!-- Colors -->
+                    <div style="display: flex; gap: 2px;">
+                        <div class="color-btn" style="background: black; width: 22px; height: 22px; border: 2px inset #fff; cursor:pointer;" onclick="paintColor='black'"></div>
+                        <div class="color-btn" style="background: gray; width: 22px; height: 22px; border: 2px inset #fff; cursor:pointer;" onclick="paintColor='gray'"></div>
+                        <div class="color-btn" style="background: red; width: 22px; height: 22px; border: 2px inset #fff; cursor:pointer;" onclick="paintColor='red'"></div>
+                        <div class="color-btn" style="background: yellow; width: 22px; height: 22px; border: 2px inset #fff; cursor:pointer;" onclick="paintColor='yellow'"></div>
+                        <div class="color-btn" style="background: lime; width: 22px; height: 22px; border: 2px inset #fff; cursor:pointer;" onclick="paintColor='lime'"></div>
+                        <div class="color-btn" style="background: blue; width: 22px; height: 22px; border: 2px inset #fff; cursor:pointer;" onclick="paintColor='blue'"></div>
+                        <div class="color-btn" style="background: fuchsia; width: 22px; height: 22px; border: 2px inset #fff; cursor:pointer;" onclick="paintColor='fuchsia'"></div>
+                        <div class="color-btn" style="background: white; width: 22px; height: 22px; border: 2px inset #fff; cursor:pointer;" onclick="paintColor='white'"></div>
+                    </div>
+                </div>
+                <div style="flex:1; overflow: auto; padding: 4px; background: #808080;">
+                    <canvas id="paint-canvas" width="600" height="400" style="background: white; cursor: crosshair; border: 2px inset #fff;"></canvas>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- FULL Minesweeper -->
+        <div class="window app-window" id="minesweeper-window" style="display: none; top: 15%; left: 40%; width: 220px;">
+            <div class="title-bar"><div class="title-bar-text">Minesweeper</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="background: #c0c0c0; padding: 5px;">
+                <div id="minesweeper-grid" style="display: grid; grid-template-columns: repeat(9, 20px); gap: 1px; border: 2px inset #fff; background: #808080;">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- My Computer -->
+        <div class="window app-window" id="explorer-window" style="display: none; top: 15%; left: 15%; width: 550px; height: 400px;">
+            <div class="title-bar"><div class="title-bar-text">My Computer</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="background: white; padding: 5px; height: calc(100% - 30px); overflow-y: auto;">
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; padding: 10px;">
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="alert('Drive A: is empty. Please insert a floppy disk.')"><img src="https://win98icons.alexmeub.com/icons/png/hard_disk_drive-4.png" width="32"><br><span style="font-size: 12px;">3½ Floppy (A:)</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="openApp('c-drive-window')"><img src="https://win98icons.alexmeub.com/icons/png/hard_disk_drive-4.png" width="32"><br><span style="font-size: 12px;">Local Disk (C:)</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="triggerBSOD('CD_ROM_OVERHEATED')"><img src="https://win98icons.alexmeub.com/icons/png/cd_drive-4.png" width="32"><br><span style="font-size: 12px;">CD-ROM (D:)</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="openApp('cmd-window')"><img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png" width="32"><br><span style="font-size: 12px;">MS-DOS</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="alert('Printers functionality coming soon.')"><img src="https://win98icons.alexmeub.com/icons/png/printer-1.png" width="32"><br><span style="font-size: 12px;">Printers</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="alert('Control Panel functionality coming soon.')"><img src="https://win98icons.alexmeub.com/icons/png/settings_gear-0.png" width="32"><br><span style="font-size: 12px;">Control Panel</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="openApp('dialer-window')"><img src="https://win98icons.alexmeub.com/icons/png/network_connection-1.png" width="32"><br><span style="font-size: 12px;">Dial-Up Networking</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="alert('Scheduled Tasks functionality coming soon.')"><img src="https://win98icons.alexmeub.com/icons/png/time_and_date-0.png" width="32"><br><span style="font-size: 12px;">Scheduled Tasks</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" onclick="alert('Web Folders functionality coming soon.')"><img src="https://win98icons.alexmeub.com/icons/png/directory_web-0.png" width="32"><br><span style="font-size: 12px;">Web Folders</span></div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Recycle Bin -->
+        <div class="window app-window" id="bin-window" style="display: none; top: 10%; left: 10%; width: 500px; height: 350px;">
+            <div class="title-bar"><div class="title-bar-text">Recycle Bin</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="background: white; padding: 5px; height: calc(100% - 30px); overflow-y: auto;">
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; padding: 10px;">
+                    <div style="text-align: center; width: 85px; cursor: pointer; padding: 5px; word-wrap: break-word;" ondblclick="openRecycledFile('secret.txt')"><img src="https://win98icons.alexmeub.com/icons/png/file_lines-0.png" width="32"><br><span style="font-size: 11px;">secret.txt</span></div>
+                    <div style="text-align: center; width: 85px; cursor: pointer; padding: 5px; word-wrap: break-word;" ondblclick="openRecycledFile('virus.exe')"><img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png" width="32"><br><span style="font-size: 11px;">virus.exe</span></div>
+                    <div style="text-align: center; width: 85px; cursor: pointer; padding: 5px; word-wrap: break-word;" ondblclick="openRecycledFile('DO_NOT_READ.doc')"><img src="https://win98icons.alexmeub.com/icons/png/file_lines-0.png" width="32"><br><span style="font-size: 11px;">DO_NOT_READ.doc</span></div>
+                    <div style="text-align: center; width: 85px; cursor: pointer; padding: 5px; word-wrap: break-word;" ondblclick="openRecycledFile('C_DRIVE_BACKUP.bin')"><img src="https://win98icons.alexmeub.com/icons/png/file_gears-1.png" width="32"><br><span style="font-size: 11px;">C_DRIVE_BACKUP.bin</span></div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Messenger & Dialer -->
+        <div class="window app-window" id="dialer-window" style="display: none; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; background: #c0c0c0;">
+            <div class="title-bar"><div class="title-bar-text">Phone Dialer</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 15px; text-align: center; background: #c0c0c0 !important; border: none !important;">
+                <p style="text-align: left; margin: 0 0 5px 0;">Number to dial:</p>
+                <input type="text" id="dial-number" style="width: 100%; margin-bottom: 15px; box-sizing: border-box;">
+                <button onclick="dialCall()" style="width: 80px; height: 23px;">Dial</button>
+            </div>
+        </div>
+        <div class="window app-window" id="messenger-window" style="display: none; top: 15%; left: 60%; width: 300px; height: 400px;">
+            <div class="title-bar"><div class="title-bar-text">MSN</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="display: flex; flex-direction: column; height: calc(100% - 30px); margin: 0; padding: 5px;">
+                <div id="msn-chat-history" style="flex: 1; background: white; border: 2px inset #fff; margin-bottom: 5px; padding: 5px; overflow-y: auto; font-family: 'Times New Roman'; font-size: 14px;">
+                    <div style="color: gray; font-size: 12px;">Chat started...</div>
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="msn-input" style="flex: 1;" onkeypress="if(event.key === 'Enter') sendChat()">
+                    <button onclick="sendChat()">Send</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Admin Login -->
+        <div class="window app-window" id="admin-login-window" style="display: none; top: 40%; left: 40%; width: 300px; z-index: 10010; background: #c0c0c0;">
+            <div class="title-bar"><div class="title-bar-text">Admin Login</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 15px; text-align: center;">
+                <img src="https://win98icons.alexmeub.com/icons/png/users_key-4.png" width="32" style="margin-bottom: 10px;">
+                <p style="margin: 0 0 10px 0; font-weight: bold;">Enter Administrator Password:</p>
+                <input type="password" id="admin-password-input" style="width: 100%; margin-bottom: 15px; box-sizing: border-box;" onkeypress="if(event.key==='Enter') checkAdminPassword()">
+                <button onclick="checkAdminPassword()" style="width: 80px; height: 25px;">Login</button>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="window app-window" id="admin-panel-window" style="display: none; top: 20%; left: 25%; width: 450px; height: 350px;">
+            <div class="title-bar"><div class="title-bar-text">System Administration</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="padding: 10px; display: flex; flex-direction: column; height: calc(100% - 30px); background: #c0c0c0;">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <img src="https://win98icons.alexmeub.com/icons/png/settings_gear-4.png" width="32" height="32">
+                    <div>
+                        <p style="margin: 0; font-weight: bold;">System Administration Tools</p>
+                        <p style="margin: 5px 0 0 0; font-size: 11px;">Configure advanced system settings and execute critical tasks.</p>
+                    </div>
+                </div>
+                
+                <fieldset style="margin-bottom: 10px; padding: 10px; flex: 1;">
+                    <legend>Administrative Actions</legend>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button onclick="triggerBSOD('OVERLOAD')" style="display: flex; align-items: center; gap: 8px; padding: 5px; height: 35px; justify-content: flex-start; cursor: default;">
+                            <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-0.png" width="16"> Overload Core
+                        </button>
+                        <button onclick="triggerWipe(); document.getElementById('admin-panel-window').style.display='none';" style="display: flex; align-items: center; gap: 8px; padding: 5px; height: 35px; justify-content: flex-start; cursor: default;">
+                            <img src="https://win98icons.alexmeub.com/icons/png/hard_disk_drive-0.png" width="16"> Format Drive C:
+                        </button>
+                        <button onclick="for(let i=0; i<20; i++) setTimeout(spawnRandomAd, i*150);" style="display: flex; align-items: center; gap: 8px; padding: 5px; height: 35px; justify-content: flex-start; cursor: default;">
+                            <img src="https://win98icons.alexmeub.com/icons/png/msg_error-0.png" width="16"> Deploy Payload
+                        </button>
+                        <button onclick="document.getElementById('oem-log').innerText = 'Flashing BIOS... DO NOT TURN OFF COMPUTER.'; setTimeout(() => triggerBSOD('BIOS_FLASH_FAILED'), 3000);" style="display: flex; align-items: center; gap: 8px; padding: 5px; height: 35px; justify-content: flex-start; cursor: default;">
+                            <img src="https://win98icons.alexmeub.com/icons/png/processor-0.png" width="16"> Flash BIOS
+                        </button>
+                    </div>
+                </fieldset>
+
+                <div style="background: white; border: 2px inset #fff; padding: 5px; height: 40px; font-family: Tahoma, sans-serif; font-size: 11px; overflow-y: auto;" id="oem-log">
+                    System ready. Waiting for user input...
+                </div>
+                
+                <div style="text-align: right; margin-top: 10px;">
+                    <button onclick="closeApp('admin-panel-window')" style="width: 80px; height: 23px;">OK</button>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- C: Drive -->
+        <div class="window app-window" id="c-drive-window" style="display: none; top: 18%; left: 18%; width: 550px; height: 400px;">
+            <div class="title-bar"><div class="title-bar-text">Local Disk (C:)</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="background: white; padding: 5px; height: calc(100% - 30px); overflow-y: auto;">
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; padding: 10px;">
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="openApp('system32-window')"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" width="32"><br><span style="font-size: 12px;">WINDOWS</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="alert('Program Files is corrupted.')"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" width="32"><br><span style="font-size: 12px;">Program Files</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="alert('My Documents is empty.')"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" width="32"><br><span style="font-size: 12px;">My Documents</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="triggerBSOD('FATAL_EXCEPTION_0x00000000')"><img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png" width="32"><br><span style="font-size: 12px;">Free_Games.exe</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="for(let i=0; i<30; i++) setTimeout(spawnRandomAd, i*100);"><img src="https://win98icons.alexmeub.com/icons/png/msg_error-0.png" width="32"><br><span style="font-size: 12px;">Win32.Trojan</span></div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- System32 -->
+        <div class="window app-window" id="system32-window" style="display: none; top: 21%; left: 21%; width: 550px; height: 400px;">
+            <div class="title-bar"><div class="title-bar-text">C:\WINDOWS\SYSTEM32</div><div class="title-bar-controls"><button class="btn-min" aria-label="Minimize"></button><button class="btn-max" aria-label="Maximize"></button><button class="btn-close" aria-label="Close"></button></div></div>
+            <div class="window-body" style="background: white; padding: 5px; height: calc(100% - 30px); overflow-y: auto;">
+                <p style="color: red; font-weight: bold; padding-left: 10px;">WARNING: DO NOT MODIFY CONTENTS OF THIS FOLDER.</p>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; padding: 10px;">
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="triggerBSOD('SYSTEM32_DELETED')"><img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png" width="32"><br><span style="font-size: 12px;">delete_all.bat</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="alert('kernel32.dll is locked.')"><img src="https://win98icons.alexmeub.com/icons/png/file_gears-1.png" width="32"><br><span style="font-size: 12px;">kernel32.dll</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="alert('hal.dll is locked.')"><img src="https://win98icons.alexmeub.com/icons/png/file_gears-1.png" width="32"><br><span style="font-size: 12px;">hal.dll</span></div>
+                    <div style="text-align: center; width: 80px; cursor: pointer;" ondblclick="triggerBSOD('RANSOMWARE_ENCRYPTED')"><img src="https://win98icons.alexmeub.com/icons/png/msg_warning-0.png" width="32"><br><span style="font-size: 12px; color: red;">Ransom.exe</span></div>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- OS Alert Box -->
+        <div class="window app-window" id="os-alert-window" style="display: none; top: 40%; left: 40%; width: 300px; z-index: 100000; box-shadow: 2px 2px 0 #000;">
+            <div class="title-bar"><div class="title-bar-text" id="os-alert-title"><img src="https://win98icons.alexmeub.com/icons/png/msg_information-0.png" width="16" style="margin-right: 5px; vertical-align: middle;">Windows 98</div><div class="title-bar-controls"><button class="btn-close" aria-label="Close" onclick="closeApp('os-alert-window'); return false;"></button></div></div>
+            <div class="window-body" style="padding: 15px; display: flex; flex-direction: column; align-items: center; background: #c0c0c0;">
+                <div style="display: flex; gap: 15px; align-items: center; width: 100%; margin-bottom: 15px;">
+                    <img id="os-alert-icon" src="https://win98icons.alexmeub.com/icons/png/msg_information-0.png" style="width: 32px; height: 32px;">
+                    <p id="os-alert-msg" style="margin: 0; font-family: Tahoma, sans-serif; font-size: 11px;"></p>
+                </div>
+                <div style="text-align: center;">
+                    <button onclick="closeApp('os-alert-window')" style="width: 80px; height: 23px;">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clippy (Hijack) -->
+        <div id="clippy" style="position: absolute; bottom: 50px; right: 20px; z-index: 10000; display: flex; flex-direction: column; align-items: flex-end;">
+            <div id="clippy-speech" style="background: #ffffe1; border: 1px solid #000; border-radius: 10px; padding: 10px; font-family: Tahoma; font-size: 12px; margin-bottom: 5px; box-shadow: 2px 2px 5px rgba(0,0,0,0.3); display: none; width: 150px;">
+                It looks like you're trying to build a retro OS. Would you like help with that?
+            </div>
+            <img src="https://win98icons.alexmeub.com/icons/png/help_book_big-0.png" alt="Clippy" style="cursor: pointer; width: 48px; height: 48px;" onclick="if(window.triggerClippyEvents) window.triggerClippyEvents();">
+        </div>
+
+
+
+    </div>
+
+    <!-- Start Menu -->
+    <div id="start-menu" style="display: none;">
+        <div class="start-menu-sidebar"><span class="sidebar-text">Windows 98</span></div>
+        <div class="start-menu-items">
+            <div class="start-item" id="start-programs">
+                <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png"> Programs ▶
+                <div class="sub-menu" id="sub-programs" style="display:none; position: absolute; left: 100%; bottom: 0; top: auto; background: #c0c0c0; border: 2px outset #fff; padding: 2px; width: 200px;">
+                    <div class="start-item">
+                        <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" width="16"> Accessories ▶
+                        <div class="sub-menu" style="display:none; position: absolute; left: 100%; top: 0; background: #c0c0c0; border: 2px outset #fff; padding: 2px; width: 200px;">
+                            <div class="start-item" onclick="openApp('notepad-window')"><img src="https://win98icons.alexmeub.com/icons/png/notepad-0.png" width="16"> WordPad</div>
+                            <div class="start-item" onclick="openApp('paint-window')"><img src="https://win98icons.alexmeub.com/icons/png/paint_file-0.png" width="16"> Paint</div>
+                            <div class="start-item" onclick="openApp('calc-window')"><img src="https://win98icons.alexmeub.com/icons/png/calculator-1.png" width="16"> Calculator</div>
+                        </div>
+                    </div>
+                    <div class="start-item">
+                        <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" width="16"> System Tools ▶
+                        <div class="sub-menu" style="display:none; position: absolute; left: 100%; top: 0; background: #c0c0c0; border: 2px outset #fff; padding: 2px; width: 200px;">
+                            <div class="start-item" onclick="openApp('antivirus-window')"><img src="https://win98icons.alexmeub.com/icons/png/settings_gear-0.png" width="16"> Antivirus</div>
+                            <div class="start-item" onclick="openApp('control-panel')"><img src="https://win98icons.alexmeub.com/icons/png/settings_gear-0.png" width="16"> Control Panel</div>
+                        </div>
+                    </div>
+                    <div class="start-item">
+                        <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" width="16"> Games ▶
+                        <div class="sub-menu" style="display:none; position: absolute; left: 100%; top: 0; background: #c0c0c0; border: 2px outset #fff; padding: 2px; width: 200px;">
+                            <div class="start-item" onclick="openApp('minesweeper-window')"><img src="https://win98icons.alexmeub.com/icons/png/minesweeper-0.png" width="16"> Minesweeper</div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="start-item" onclick="openApp('ie-window')"><img src="https://win98icons.alexmeub.com/icons/png/msie1-2.png" width="16"> Internet Explorer</div>
+                    <div class="start-item" onclick="openApp('messenger-window')"><img src="https://win98icons.alexmeub.com/icons/png/msn2-1.png" width="16"> MSN Messenger</div>
+                    <div class="start-item" onclick="openApp('dialer-window')"><img src="https://win98icons.alexmeub.com/icons/png/modem-0.png" width="16"> Phone Dialer</div>
+                </div>
+            </div>
+            <hr>
+            <div class="start-item" onclick="openApp('run-dialog')"><img src="https://win98icons.alexmeub.com/icons/png/executable_script-0.png"> Run...</div>
+            <div class="start-item" onclick="shutDown()"><img src="https://win98icons.alexmeub.com/icons/png/shut_down_cool-4.png"> Shut Down...</div>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <button class="start-button" id="start-btn"><img src="https://win98icons.alexmeub.com/icons/png/windows_slanted-1.png" alt="Start"><b>Start</b></button>
+        <div class="taskbar-tasks" id="taskbar-tasks" style="display:flex;"></div>
+        <div class="taskbar-tray">
+            <img src="https://win98icons.alexmeub.com/icons/png/loudspeaker_rays-0.png" title="Volume" id="volume-icon" style="width: 16px; height: 16px; margin-right: 5px; cursor: pointer;">
+            <span id="clock">12:30 PM</span>
+        </div>
+        <!-- Volume Popup -->
+        <div id="volume-popup" style="display: none; position: absolute; bottom: 30px; right: 50px; width: 60px; height: 160px; background: #c0c0c0; border: 2px outset #fff; z-index: 10000; flex-direction: column; align-items: center; padding: 10px;">
+            <span style="font-family: Tahoma; font-size: 11px; margin-bottom: 15px;">Volume</span>
+            <input type="range" id="vol-slider" min="0" max="100" value="100" style="transform: rotate(-90deg); width: 80px; margin-top: 30px;">
+            <span id="vol-percent" style="font-family: Tahoma; font-size: 11px; margin-top: 40px; font-weight: bold;">100%</span>
+        </div>
+        <!-- Calendar Popup -->
+        <div id="calendar-popup" class="window" style="display: none; position: absolute; right: 0; bottom: 30px; width: 220px; z-index: 100000; background-color: #c0c0c0;">
+            <div class="title-bar"><div class="title-bar-text">Date/Time Properties</div><div class="title-bar-controls"><button class="btn-close" onclick="document.getElementById('calendar-popup').style.display='none'"></button></div></div>
+            <div class="window-body" style="padding: 10px; text-align: center;">
+                <div id="calendar-date" style="font-weight: bold; margin-bottom: 10px; font-family: Tahoma, sans-serif; font-size: 14px;"></div>
+                <div id="calendar-time" style="font-size: 24px; font-family: 'Courier New', monospace; border: 2px inset #fff; padding: 5px; background: white; margin: 0 auto; width: 140px;"></div>
+            </div>
+        </div>
+    </div>
+
+
+    
+<!-- Fake Email Client -->
+<div class="window app-window" id="email-window" style="display: none; top: 10%; left: 10%; width: 500px; height: 400px;">
+    <div class="title-bar"><div class="title-bar-text">Outlook Express</div><div class="title-bar-controls"><button class="btn-min"></button><button class="btn-max"></button><button class="btn-close" onclick="closeApp('email-window')"></button></div></div>
+    <div class="window-body" id="email-body" style="padding: 10px; font-family: Tahoma; overflow-y: scroll; height: calc(100% - 30px);">
+        <div style="font-weight: bold; border-bottom: 2px solid gray; margin-bottom: 10px;">Inbox</div>
+        <div id="email-list"></div>
+    </div>
+</div>
+
+<!-- Sound Recorder -->
+<div class="window app-window" id="soundrec-window" style="display: none; top: 20%; left: 20%; width: 300px; height: 150px;">
+    <div class="title-bar"><div class="title-bar-text">Sound Recorder</div><div class="title-bar-controls"><button class="btn-close" onclick="closeApp('soundrec-window')"></button></div></div>
+    <div class="window-body" style="padding: 10px; text-align: center;">
+        <div style="width: 100%; height: 50px; background: #000; color: #0f0; margin-bottom: 10px; font-family: monospace; display:flex; align-items:center; justify-content:center;">
+            <span id="waveform">--- --- ---</span>
+        </div>
+        <button style="color:red; font-weight:bold;" onclick="alert('Recording... I can hear you breathing.')">&#9679; Record</button>
+    </div>
+</div>
+
+<!-- Address Book -->
+<div class="window app-window" id="address-window" style="display: none; top: 30%; left: 30%; width: 400px; height: 300px;">
+    <div class="title-bar"><div class="title-bar-text">Address Book</div><div class="title-bar-controls"><button class="btn-close" onclick="closeApp('address-window')"></button></div></div>
+    <div class="window-body" style="padding: 10px; overflow-y: scroll; height: calc(100% - 30px);">
+        <ul style="list-style-type: none; padding: 0;">
+            <li><b>John Doe</b> - <i>Deceased</i></li>
+            <li><b>Mary Smith</b> - <i>Do not contact</i></li>
+            <li><b>The Watcher</b> - <i>He knows</i></li>
+            <li><b>Skaterboi</b> - <i>Offline forever</i></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Fake Webcam -->
+<div class="window app-window" id="webcam-window" style="display: none; top: 5%; left: 60%; width: 320px; height: 280px;">
+    <div class="title-bar"><div class="title-bar-text">Camera Active</div><div class="title-bar-controls"><button class="btn-close" onclick="closeApp('webcam-window')"></button></div></div>
+    <div class="window-body" style="padding: 0; background: #000; text-align:center;">
+        <img src="https://media.giphy.com/media/Y4gtaaRlLXqL1vZ99t/giphy.gif" width="100%" height="100%" style="object-fit: cover;">
+    </div>
+</div>
+
+<!-- Alt-Tab Switcher -->
+<div id="task-switcher" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #c0c0c0; border: 2px outset #fff; padding: 15px; z-index: 1000000; font-family: Tahoma; min-width: 350px; box-shadow: 2px 2px 10px rgba(0,0,0,0.5);">
+    <div id="ts-icons" style="display:flex; flex-wrap:wrap; gap:15px; padding:15px; background:white; border:2px inset #fff; margin-bottom:10px; min-height: 50px; align-items:center;"></div>
+    <div id="ts-title" style="text-align:center; font-family:Tahoma; font-size:13px; font-weight:bold; height: 20px;"></div>
+</div>
+
+<!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
