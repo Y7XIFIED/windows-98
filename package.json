@@ -1,0 +1,26 @@
+{
+  "name": "hiih",
+  "version": "1.0.0",
+  "description": "<h3 align=\"center\"><b>WINDOWS 98 - HAUNTED EDITION</b></h3>",
+  "main": "script.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Y7XIFIED/windows-98.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Y7XIFIED/windows-98/issues"
+  },
+  "homepage": "https://github.com/Y7XIFIED/windows-98#readme",
+  "devDependencies": {
+    "vite": "^8.1.3"
+  }
+}
