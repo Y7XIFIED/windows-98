@@ -1,4 +1,4 @@
-<h3 align="center"><b>WINDOWS 98 - HAUNTED EDITION</b></h3>
+<h3 align="center"><b>WINDOWS 98</b></h3>
 
 <div align="center">
   <a href="https://skillicons.dev">
